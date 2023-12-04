@@ -1,0 +1,50 @@
+<%- include('../partials/header') %>
+
+<form id="new-form" action="/exercises" method="POST">
+    <label>Exercise Name:</label>
+    <input type="text" name="name">
+    <!-- <label>Weight:</label>
+    <input type="number" name="weigth">
+    <label>Reps:</label>
+    <input type="number" name="reps">
+    <label>Distance:</label>
+    <input type="number" name="distance">
+    <label>Time:</label>
+    <input type="number" name="time"> -->
+    <!-- <label>Category</label>
+    <select name="category">
+        <option value=""></option>
+    </select> -->
+    <label>Type:</label>
+    <select name="exType">
+        <option value="Weight">Weight</option>
+        <option value="Reps">Reps</option>
+        <option value="Distance">Distance</option>
+        <option value="Time">Time</option>
+        <option value="Weight and Reps">Weight and Reps</option>
+        <option value="Distance and Time">Distance and Time</option>
+        <option value="Weight and Distance">Weight and Distance</option>
+        <option value="Weight and Time">Weight and Time</option>
+        <option value="Reps and Distance">Reps and Distance</option>
+        <option value="Reps and Time">Reps and Time</option>
+    </select>
+    
+    <label>Weight Unit</label>
+    <select name="weightUnit">
+        <option value="lbs">lbs</option>
+        <option value="kgs">kgs</option>
+    </select>
+    <label>Distance Unit:</label>
+    <select name="distanceUnit">
+        <option value="ft">ft</option>
+        <option value="mi">mi<option>
+        <option value="m">m</option>
+        <option value="km">km<option>
+    </select>
+    <label>Description</label>
+    <input type="text" name="description">
+    <input type="submit" value="Add Exercise">
+</form>
+
+
+<%- include('../partials/footer') %>
