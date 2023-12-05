@@ -3,7 +3,8 @@ const Category = require('../models/category');
 
 module.exports = {
     index,
-    calendar
+    calendar,
+    show
 };
 
 let date = new Date();
@@ -36,3 +37,7 @@ function calendar(req, res) {
     }
     res.redirect('/workouts')
 };
+
+function show(req, res) {
+    res.render('workouts/show', {title: req.params.id})
+}
