@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
 const exerciseCtrl = require('../controllers/exercises')
+const ensureLoggedIn = require('../config/ensureLoggedIn');
 
-/* GET users listing. */
-router.get('/', exerciseCtrl.index);
-router.get('/:id', exerciseCtrl.show);
-router.get('/new', exerciseCtrl.new);
-router.post('/', exerciseCtrl.create);
+router.get('/', ensureLoggedIn, exerciseCtrl.index);
+router.get('/new', ensureLoggedIn, exerciseCtrl.new);
+router.get('/:id', ensureLoggedIn, exerciseCtrl.show);
+router.post('/', ensureLoggedIn, exerciseCtrl.create);
 
 module.exports = router;

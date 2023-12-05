@@ -1,8 +1,9 @@
 var express = require('express');
 var router = express.Router();
 const passport = require('passport');
+const ensureLoggedIn = require('../config/ensureLoggedIn');
 
-router.get('/home', function(req, res) {
+router.get('/home', ensureLoggedIn, function(req, res) {
   res.render('home', { title: 'Home Page'})
 });
 

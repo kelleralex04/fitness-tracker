@@ -25,7 +25,6 @@ async function newExercise(req, res) {
         }
         return 0
     });
-    console.log(categories)
     res.render('exercises/new', { title: 'Add Exercise', errorMsg: '', categories});
 };
 
