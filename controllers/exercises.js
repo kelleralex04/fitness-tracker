@@ -8,8 +8,9 @@ module.exports = {
 };
 
 async function index(req, res) {
+    const categories = await Category.find({});
     const exercises = await Exercise.find({});
-    res.render('exercises/index', { title: 'All Exercises' , exercises });
+    res.render('exercises/index', { title: 'All Exercises' , categories, exercises });
 };
 
 function newMovie(req, res) {
