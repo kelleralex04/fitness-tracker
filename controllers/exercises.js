@@ -10,7 +10,10 @@ module.exports = {
 
 async function index(req, res) {
     const categories = await Category.find({});
-    const exercises = await Exercise.find({});
+    const exercises = [];
+    for (const e of req.user.exercise) {
+        exercises.push(await Exercise.findById(e));
+    };
     res.render('exercises/index', { title: 'All Exercises' , categories, exercises });
 };
 
@@ -38,6 +41,8 @@ async function create(req, res) {
         } else {
             await Category.create({ name: exercise.catName, exercise: exercise});
         };
+        req.user.exercise.push(exercise);
+        await req.user.save();
         res.redirect('/exercises');
     } catch(err) {
         console.log(err);

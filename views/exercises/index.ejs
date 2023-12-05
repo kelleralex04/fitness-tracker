@@ -3,7 +3,7 @@
 <% categories.forEach(c => { %>
     <h1><%= c.name %></h1>
     <% exercises.forEach(e => { %>
-        <% if (c.exercise.includes(e._id)) { %>
+        <% if (user.exercise.includes(e._id) && c.exercise.includes(e._id)) { %>
             <a href="/exercises/<%= e._id %>"><%= e.name %></a>
         <% } %>
     <% }) %>
