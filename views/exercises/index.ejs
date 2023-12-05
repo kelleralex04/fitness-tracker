@@ -1,9 +1,12 @@
 <%- include('../partials/header') %>
 
-
 <% categories.forEach(c => { %>
     <h1><%= c.name %></h1>
-    <div><%= c.exercise %></div>
+    <% exercises.forEach(e => { %>
+        <% if (c.exercise.includes(e._id)) { %>
+            <a href="/exercises/<%= e._id %>"><%= e.name %></a>
+        <% } %>
+    <% }) %>
 <% }) %>
 <a href="/exercises/new">Add Exercise</a>
 

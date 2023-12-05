@@ -3,8 +3,9 @@ const Category = require('../models/category');
 
 module.exports = {
     index,
-    new: newMovie,
-    create
+    new: newExercise,
+    create,
+    show
 };
 
 async function index(req, res) {
@@ -13,8 +14,19 @@ async function index(req, res) {
     res.render('exercises/index', { title: 'All Exercises' , categories, exercises });
 };
 
-function newMovie(req, res) {
-    res.render('exercises/new', { title: 'Add Exercise', errorMsg: ''});
+async function newExercise(req, res) {
+    const categories = await Category.find({});
+    categories.sort(function(a,b) {
+        if (a.name.toUpperCase() < b.name.toUpperCase()) {
+            return -1;
+        }
+        if (a.name.toUpperCase() > b.name.toUpperCase()) {
+            return 1;
+        }
+        return 0
+    });
+    console.log(categories)
+    res.render('exercises/new', { title: 'Add Exercise', errorMsg: '', categories});
 };
 
 async function create(req, res) {
@@ -22,7 +34,6 @@ async function create(req, res) {
         const exercise = await Exercise.create(req.body);
         const category = await Category.findOne({ name: exercise.catName});
         if (category) {
-            console.log(category.exercise, exercise)
             category.exercise.push(exercise);
             await category.save();
         } else {
@@ -34,3 +45,8 @@ async function create(req, res) {
         res.render('exercises/new', {errorMsg: err.message});
     };
 };
+
+async function show(req, res) {
+    const exercise = await Exercise.findById(req.params.id);
+    res.render('exercises/show', { title: exercise.name, exercise, errorMsg: '' })
+}

@@ -13,12 +13,12 @@
     <input type="number" name="time"> -->
     <label>Category</label>
     <select name="catName">
-        <option value="legs">Legs</option>
-        <option value="chest">Chest</option>
-        <option value="back">Back</option>
+        <% categories.forEach(c => { %>
+            <option value="<%= c.name %>"><%= c.name %></option>
+        <% }) %>
     </select>
     <label>Type:</label>
-    <select name="exType">
+    <select name="exType" id="exType">
         <option value="Weight">Weight</option>
         <option value="Reps">Reps</option>
         <option value="Distance">Distance</option>
@@ -30,7 +30,6 @@
         <option value="Reps and Distance">Reps and Distance</option>
         <option value="Reps and Time">Reps and Time</option>
     </select>
-
     <label>Weight Unit</label>
     <select name="weightUnit">
         <option value="lbs">lbs</option>
@@ -47,6 +46,5 @@
     <input type="text" name="description">
     <input type="submit" value="Add Exercise">
 </form>
-
 
 <%- include('../partials/footer') %>

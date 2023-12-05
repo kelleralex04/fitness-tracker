@@ -4,6 +4,7 @@ const exerciseCtrl = require('../controllers/exercises')
 
 /* GET users listing. */
 router.get('/', exerciseCtrl.index);
+router.get('/:id', exerciseCtrl.show);
 router.get('/new', exerciseCtrl.new);
 router.post('/', exerciseCtrl.create);
 
