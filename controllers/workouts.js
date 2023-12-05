@@ -39,5 +39,7 @@ function calendar(req, res) {
 };
 
 function show(req, res) {
-    res.render('workouts/show', {title: req.params.id})
+    let temp = req.params.id.match(/\d+/g);
+    let showDate = new Date(temp[2], temp[0], temp[1]).toDateString();
+    res.render('workouts/show', {title: showDate})
 }
