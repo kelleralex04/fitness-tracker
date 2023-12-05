@@ -7,6 +7,7 @@ const exerciseSchema = new Schema({
     reps: Number,
     distance: Number,
     time: Number,
+    catName: String,
     exType: {
         type: String,
         enum: ['Weight', 'Reps', 'Distance', 'Time', 'Weight and Reps', 'Distance and Time', 'Weight and Distance', 'Weight and Time', 'Reps and Distance', 'Reps and Time']
@@ -20,11 +21,8 @@ const exerciseSchema = new Schema({
         enum: ['ft', 'mi', 'm', 'km']
     },
     description: String
-});
-
-const categorySchema = new Schema({
-    name: String,
-    exercise: [exerciseSchema]
+}, {
+    timestamps: true
 });
 
 module.exports = mongoose.model('Exercise', exerciseSchema);

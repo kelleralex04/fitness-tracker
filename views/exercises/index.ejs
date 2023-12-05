@@ -1,6 +1,8 @@
 <%- include('../partials/header') %>
 
-<div><%= exercises %></div>
+<% exercises.forEach(e => { %>
+    <div><%= e.name %></div>
+<% }) %>
 <a href="/exercises/new">Add Exercise</a>
 
 <%- include('../partials/footer') %>
