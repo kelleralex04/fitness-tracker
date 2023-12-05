@@ -7,6 +7,64 @@ a {
   color: #00B7FF;
 }
 
+.calendarBody {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #374709;
+}
+
+.wrapper {
+  width: 450px;
+  background: #F2F2EF;
+  border-radius: 10px;
+}
+
+.calendar {
+  padding: 20px;
+}
+
+.calendar ul{
+  display: flex;
+  list-style: none;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.calendar ul li {
+  width: calc(100% / 7);
+}
+
+.calendar .days {
+  margin-bottom: 20px;
+
+}
+.calendar .days li {
+  cursor: pointer;
+  margin-top: 30px;
+}
+
+.wrapper header {
+  display: flex;
+  align-items: center;
+  padding: 25px 30px 10px;
+  justify-content: space-between;
+}
+
+header .currentDate {
+  font-size: 1.45rem;
+  font-weight: 500;
+}
+
+.inactive {
+  color: rgb(172, 172, 172);
+}
+
+.active {
+  color: red;
+}
+
 .login {
   display: flex;
   justify-content: center;
