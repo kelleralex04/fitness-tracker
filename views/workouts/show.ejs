@@ -1,5 +1,7 @@
 <%- include('../partials/header') %>
-
-
+<form action="/workouts/new" method="GET">
+    <input type="hidden" name="dateId" value="<%= temp %>">
+    <button type="submit">Add Exercise</button>
+</form>
 
 <%- include('../partials/footer') %>

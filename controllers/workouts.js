@@ -4,7 +4,9 @@ const Category = require('../models/category');
 module.exports = {
     index,
     calendar,
-    show
+    show,
+    new: newWorkout,
+    create
 };
 
 let date = new Date();
@@ -41,5 +43,14 @@ function calendar(req, res) {
 function show(req, res) {
     let temp = req.params.id.match(/\d+/g);
     let showDate = new Date(temp[2], temp[0], temp[1]).toDateString();
-    res.render('workouts/show', {title: showDate})
+    res.render('workouts/show', { title: showDate, temp })
+}
+
+function newWorkout(req, res) {
+    let curDate = req.query.dateId.match(/\d+/g);
+    res.render('workouts/new', { title: 'Add Exercise', curDate })
+}
+
+function create(req, res) {
+    res.redirect('/workouts')
 }
