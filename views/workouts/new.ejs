@@ -1,7 +1,22 @@
 <%- include('../partials/header') %>
-
-<form action="/workouts" method="POST">
+<% exercises.forEach(e => { %>
+    <div><%= e.name %></div>
+<% }) %>
+<form action="/workouts/<%= curDate %>/exercises/new" method="GET">
+    <select name="curCategory" id="curCategory" onchange="this.form.submit()">
+        <% categories.forEach(c => { %>
+            <% if (c.name === curCategory) { %>
+                <option selected value="<%= c.name %>"><%= c.name %></option>
+            <% } else { %>
+                <option value="<%= c.name %>"><%= c.name %></option>
+            <% } %>
+        <% }) %>
+    </select>
     <input type="submit">
+</form>
+
+<form action="/workouts/<%= curDate %>/exercises" method="POST">
+    <button type="submit">Add Exercise</button>
 </form>
 
 <%- include('../partials/footer') %>

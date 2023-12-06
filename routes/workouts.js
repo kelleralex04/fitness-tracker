@@ -4,9 +4,9 @@ const workoutsCtrl = require('../controllers/workouts')
 const ensureLoggedIn = require('../config/ensureLoggedIn');
 
 router.get('/', ensureLoggedIn, workoutsCtrl.index);
-router.get('/new', ensureLoggedIn, workoutsCtrl.new);
+router.get('/:id/exercises/new', ensureLoggedIn, workoutsCtrl.new);
 router.get('/:id', ensureLoggedIn, workoutsCtrl.show);
-router.post('/', ensureLoggedIn, workoutsCtrl.create);
 router.post('/calendar', ensureLoggedIn, workoutsCtrl.calendar);
+router.post('/:id/exercises', ensureLoggedIn, workoutsCtrl.addExercise);
 
 module.exports = router;
