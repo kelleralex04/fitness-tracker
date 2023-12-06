@@ -1,21 +1,30 @@
 <%- include('../partials/header') %>
-<% exercises.forEach(e => { %>
-    <div><%= e.name %></div>
-<% }) %>
+
 <form action="/workouts/<%= curDate %>/exercises/new" method="GET">
+    <label>Category</label>
     <select name="curCategory" id="curCategory" onchange="this.form.submit()">
         <% categories.forEach(c => { %>
-            <% if (c.name === curCategory) { %>
+            <% if (c.name === curCategory.name) { %>
                 <option selected value="<%= c.name %>"><%= c.name %></option>
             <% } else { %>
                 <option value="<%= c.name %>"><%= c.name %></option>
             <% } %>
         <% }) %>
     </select>
-    <input type="submit">
+    <label>Exercise</label>
+    <select name="curExercise" id="curExercise" onchange="this.form.submit()">
+        <% exInCurCategory.forEach(e => { %>
+            <% if (e.name === curExercise.name) { %>
+                <option selected value="<%= e.name %>"><%= e.name %></option>
+            <% } else { %>
+                <option value="<%= e.name %>"><%= e.name %></option>
+            <% } %>
+        <% }) %>
+    </select>
 </form>
 
 <form action="/workouts/<%= curDate %>/exercises" method="POST">
+    
     <button type="submit">Add Exercise</button>
 </form>
 

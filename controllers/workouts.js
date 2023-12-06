@@ -1,5 +1,6 @@
 const Exercise = require('../models/exercise');
 const Category = require('../models/category');
+const e = require('express');
 
 module.exports = {
     index,
@@ -45,19 +46,37 @@ async function show(req, res) {
     let workoutId = req.params.id;
     let temp = workoutId.match(/\d+/g);
     let showDate = new Date(temp[2], temp[0], temp[1]).toDateString();
-    res.render('workouts/show', { title: showDate, workoutId, category });
+    const exercises = [];
+    const exInCurCategory = [];
+    for (const e of req.user.exercise) {
+        exercises.push(await Exercise.findById(e));
+    };
+    let firstExercise
+    for (const e of exercises) {
+        if (category.exercise.includes(e._id)) {
+            firstExercise = e.name
+            break
+        };
+    };
+    res.render('workouts/show', { title: showDate, workoutId, category, firstExercise });
 };
 
 async function newWorkout(req, res) {
     const categories = await Category.find({}).sort({ 'name': 1 });
     const exercises = [];
+    const exInCurCategory = [];
     for (const e of req.user.exercise) {
         exercises.push(await Exercise.findById(e));
     };
     let curDate = req.params.id;
-    let curCategory = req.query.curCategory;
-    console.log(curCategory)
-    res.render('workouts/new', { title: 'Add Exercise', curDate, exercises, categories, curCategory });
+    const curCategory = await Category.findOne({ 'name': `${req.query.curCategory}`})
+    exercises.forEach((e) => {
+        if (curCategory.exercise.includes(e._id)) {
+            exInCurCategory.push(e);
+        };
+    });
+    const curExercise = await Exercise.findOne({ 'name': `${req.query.curExercise}`})
+    res.render('workouts/new', { title: 'Add Exercise', curDate, categories, curCategory, exInCurCategory, curExercise });
 };
 
 function addExercise(req, res) {

@@ -1,6 +1,8 @@
 <%- include('../partials/header') %>
+
 <form action="/workouts/<%= workoutId %>/exercises/new" method="GET">
     <input type="hidden" name="curCategory" value="<%= category.name %>">
+    <input type="hidden" name="curExercise" value="<%= firstExercise %>">
     <button type="submit">Add Exercise</button>
 </form>
 
