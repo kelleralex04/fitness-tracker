@@ -1,8 +1,12 @@
 <%- include('../partials/header') %>
 
 <div><%= exercise.exType %></div>
-<div><%= exercise.weightUnit %></div>
-<div><%= exercise.distanceUnit %></div>
+<% if (exercise.exType.includes('Weight')) { %>
+    <div><%= exercise.weightUnit %></div>
+<% } %>
+<% if (exercise.exType.includes('Distance')) { %>
+    <div><%= exercise.distanceUnit %></div>
+<% } %>
 <div><%= exercise.description %></div>
 
 <%- include('../partials/footer') %>

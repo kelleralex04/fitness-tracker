@@ -5,7 +5,8 @@ module.exports = {
     index,
     new: newExercise,
     create,
-    show
+    show,
+    newCategory
 };
 
 async function index(req, res) {
@@ -35,22 +36,28 @@ async function create(req, res) {
     try {
         const exercise = await Exercise.create(req.body);
         const category = await Category.findOne({ name: exercise.catName});
-        if (category) {
-            category.exercise.push(exercise);
-            await category.save();
-        } else {
-            await Category.create({ name: exercise.catName, exercise: exercise});
-        };
+        category.exercise.push(exercise);
+        await category.save();
         req.user.exercise.push(exercise);
         await req.user.save();
         res.redirect('/exercises');
     } catch(err) {
         console.log(err);
-        res.render('exercises/new', {errorMsg: err.message});
+        res.render('exercises/new', { errorMsg: err.message });
     };
 };
 
 async function show(req, res) {
     const exercise = await Exercise.findById(req.params.id);
-    res.render('exercises/show', { title: exercise.name, exercise, errorMsg: '' })
-}
+    res.render('exercises/show', { title: exercise.name, exercise, errorMsg: '' });
+};
+
+async function newCategory(req, res) {
+    try {
+        const category = await Category.create(req.body);
+        res.redirect('/exercises/new');
+    } catch {
+        console.log(err);
+        res.render('exercises/new', { errorMsg: err.message })
+    };
+};
