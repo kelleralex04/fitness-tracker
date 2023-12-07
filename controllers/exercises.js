@@ -9,26 +9,35 @@ module.exports = {
     newCategory
 };
 
-async function index(req, res) {
-    const categories = await Category.find({});
+async function findUserExercises(req, res) {
+    const categories = [];
     const exercises = [];
+    for (const c of req.user.category) {
+        categories.push(await Category.findById(c));
+    };
+    categories.sort(function(a,b) {
+        if (a.name.toUpperCase() < b.name.toUpperCase()) {
+            return -1;
+        };
+        if (a.name.toUpperCase() > b.name.toUpperCase()) {
+            return 1;
+        };
+        return 0
+    });
     for (const e of req.user.exercise) {
         exercises.push(await Exercise.findById(e));
     };
+    return { categories: categories, exercises: exercises }
+};
+
+async function index(req, res) {
+    categories = (await findUserExercises(req, res)).categories;
+    exercises = (await findUserExercises(req, res)).exercises;
     res.render('exercises/index', { title: 'All Exercises' , categories, exercises });
 };
 
 async function newExercise(req, res) {
-    const categories = await Category.find({});
-    categories.sort(function(a,b) {
-        if (a.name.toUpperCase() < b.name.toUpperCase()) {
-            return -1;
-        }
-        if (a.name.toUpperCase() > b.name.toUpperCase()) {
-            return 1;
-        }
-        return 0
-    });
+    categories = (await findUserExercises(req, res)).categories;
     res.render('exercises/new', { title: 'New Exercise', errorMsg: '', categories});
 };
 
@@ -55,6 +64,8 @@ async function show(req, res) {
 async function newCategory(req, res) {
     try {
         const category = await Category.create(req.body);
+        req.user.category.push(category);
+        await req.user.save();
         res.redirect('/exercises/new');
     } catch {
         console.log(err);

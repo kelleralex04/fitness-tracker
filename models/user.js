@@ -12,6 +12,10 @@ const userSchema = new Schema({
     exercise: [{
         type: Schema.Types.ObjectId,
         ref: 'Exercise'
+    }],
+    category: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Category'
     }]
 }, {
     timestamps: true
