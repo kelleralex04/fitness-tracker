@@ -2,6 +2,7 @@
 
 <form action="/workouts/<%= curDate %>/exercises/new" method="GET">
     <label>Category</label>
+    <input type="hidden" name="catChange" value="true">
     <select name="curCategory" id="curCategory" onchange="this.form.submit()">
         <% categories.forEach(c => { %>
             <% if (c.name === curCategory.name) { %>
@@ -11,7 +12,9 @@
             <% } %>
         <% }) %>
     </select>
-    <label>Exercise</label>
+</form>
+<form action="/workouts/<%= curDate %>/exercises/new" method="GET"">
+    <br><label>Exercise</label>
     <select name="curExercise" id="curExercise" onchange="this.form.submit()">
         <% exInCurCategory.forEach(e => { %>
             <% if (e.name === curExercise.name) { %>
@@ -21,10 +24,24 @@
             <% } %>
         <% }) %>
     </select>
+    <input type="hidden" name="curCategory" value="<%= curCategory.name %>">
 </form>
 
 <form action="/workouts/<%= curDate %>/exercises" method="POST">
-    
+    <h3><%= curExercise.name %></h3>
+    <% if (curExercise.exType.includes('Weight')) { %>
+        <input type="number" name="weight" placeholder="Weight" required>
+    <% } %>
+    <% if (curExercise.exType.includes('Reps')) { %>
+        <input type="number" name="reps" placeholder="Reps" required>
+    <% } %>
+    <% if (curExercise.exType.includes('Time')) { %>
+        <input type="number" name="time" placeholder="Time" required>
+    <% } %>
+    <% if (curExercise.exType.includes('Distance')) { %>
+        <input type="number" name="distance" placeholder="Distance" required>
+    <% } %>
+    <input type="hidden" name="exerciseName" value="<%= curExercise.name %>">
     <button type="submit">Add Exercise</button>
 </form>
 

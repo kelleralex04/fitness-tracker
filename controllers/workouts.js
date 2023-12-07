@@ -1,5 +1,6 @@
 const Exercise = require('../models/exercise');
 const Category = require('../models/category');
+const Workout = require('../models/workout')
 const e = require('express');
 
 module.exports = {
@@ -45,9 +46,9 @@ async function show(req, res) {
     const category = await Category.findOne({}, {}, { sort: { 'name' : 1 }}, function(err, post){});
     let workoutId = req.params.id;
     let temp = workoutId.match(/\d+/g);
-    let showDate = new Date(temp[2], temp[0], temp[1]).toDateString();
+    let date = new Date(temp[2], temp[0] - 1, temp[1])
+    let showDate = date.toDateString();
     const exercises = [];
-    const exInCurCategory = [];
     for (const e of req.user.exercise) {
         exercises.push(await Exercise.findById(e));
     };
@@ -58,27 +59,52 @@ async function show(req, res) {
             break
         };
     };
-    res.render('workouts/show', { title: showDate, workoutId, category, firstExercise });
+    let todaysWorkouts = await Workout.find({ date: date });
+    res.render('workouts/show', { title: showDate, workoutId, category, firstExercise, todaysWorkouts });
 };
 
 async function newWorkout(req, res) {
+    let curDate = req.params.id;
     const categories = await Category.find({}).sort({ 'name': 1 });
     const exercises = [];
     const exInCurCategory = [];
+    let curExercise
     for (const e of req.user.exercise) {
         exercises.push(await Exercise.findById(e));
     };
-    let curDate = req.params.id;
-    const curCategory = await Category.findOne({ 'name': `${req.query.curCategory}`})
+    const curCategory = await Category.findOne({ 'name': `${req.query.curCategory}`});
     exercises.forEach((e) => {
         if (curCategory.exercise.includes(e._id)) {
             exInCurCategory.push(e);
         };
     });
-    const curExercise = await Exercise.findOne({ 'name': `${req.query.curExercise}`})
+    exInCurCategory.sort(function(a,b) {
+        if (a.name.toUpperCase() < b.name.toUpperCase()) {
+            return -1;
+        }
+        if (a.name.toUpperCase() > b.name.toUpperCase()) {
+            return 1;
+        }
+        return 0
+    });
+    if (req.query.catChange) {
+        curExercise = await Exercise.findOne({ 'name': `${exInCurCategory[0].name}`});
+    } else {
+        curExercise = await Exercise.findOne({ 'name': `${req.query.curExercise}`});
+    } 
     res.render('workouts/new', { title: 'Add Exercise', curDate, categories, curCategory, exInCurCategory, curExercise });
 };
 
-function addExercise(req, res) {
+async function addExercise(req, res) {
+    let workoutId = req.params.id;
+    let temp = workoutId.match(/\d+/g);
+    let showDate = new Date(temp[2], temp[0] - 1, temp[1]);
+    const workout = await Workout.create({ date: showDate, set: []});
+    workout.set.push(req.body)
+    try {
+        await workout.save();
+    } catch(err) {
+        console.log(err);
+    };
     res.redirect(`/workouts/${req.params.id}`)
 };

@@ -1,5 +1,23 @@
 <%- include('../partials/header') %>
 
+<% todaysWorkouts.forEach(w => { %>
+    <% w.set.forEach(s => { %>
+        <h3><%= s.exerciseName %></h3>
+        <% if (s.weight) { %>
+            <div>Weight: <%= s.weight %></div>
+        <% } %>
+        <% if (s.reps) { %>
+            <div>Reps: <%= s.reps %></div>
+        <% } %>
+        <% if (s.distance) { %>
+            <div>Distance: <%= s.distance %></div>
+        <% } %>
+        <% if (s.time) { %>
+            <div>Time: <%= s.time %></div>
+        <% } %>
+    <% }) %>
+<% }) %>
+
 <form action="/workouts/<%= workoutId %>/exercises/new" method="GET">
     <input type="hidden" name="curCategory" value="<%= category.name %>">
     <input type="hidden" name="curExercise" value="<%= firstExercise %>">
