@@ -31,8 +31,8 @@ async function findUserExercises(req, res) {
 };
 
 async function index(req, res) {
-    categories = (await findUserExercises(req, res)).categories;
-    exercises = (await findUserExercises(req, res)).exercises;
+    const categories = (await findUserExercises(req, res)).categories;
+    const exercises = (await findUserExercises(req, res)).exercises;
     res.render('exercises/index', { title: 'All Exercises' , categories, exercises });
 };
 

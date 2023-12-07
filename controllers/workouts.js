@@ -42,30 +42,55 @@ function calendar(req, res) {
     res.redirect('/workouts');
 };
 
+async function findUserExercises(req, res) {
+    const categories = [];
+    const exercises = [];
+    for (const c of req.user.category) {
+        const curCategory = await Category.findById(c);
+        if (curCategory.exercise[0]) {
+            categories.push(await Category.findById(c));
+        };
+    };
+    categories.sort(function(a,b) {
+        if (a.name.toUpperCase() < b.name.toUpperCase()) {
+            return -1;
+        };
+        if (a.name.toUpperCase() > b.name.toUpperCase()) {
+            return 1;
+        };
+        return 0
+    });
+    for (const e of categories[0].exercise) {
+        exercises.push(await Exercise.findById(e))
+    };
+    exercises.sort(function(a,b) {
+        if (a.name.toUpperCase() < b.name.toUpperCase()) {
+            return -1;
+        };
+        if (a.name.toUpperCase() > b.name.toUpperCase()) {
+            return 1;
+        };
+        return 0
+    });
+    return { categories: categories, exercises: exercises }
+};
+
 async function show(req, res) {
-    const category = await Category.findOne({}, {}, { sort: { 'name' : 1 }}, function(err, post){});
+    const categories = (await findUserExercises(req, res)).categories;
+    const exercises = (await findUserExercises(req, res)).exercises;
     let workoutId = req.params.id;
     let temp = workoutId.match(/\d+/g);
     let date = new Date(temp[2], temp[0] - 1, temp[1])
     let showDate = date.toDateString();
-    const exercises = [];
-    for (const e of req.user.exercise) {
-        exercises.push(await Exercise.findById(e));
-    };
-    let firstExercise
-    for (const e of exercises) {
-        if (category.exercise.includes(e._id)) {
-            firstExercise = e.name
-            break
-        };
-    };
+    let firstCategory = categories[0].name;
+    let firstExercise = exercises[0].name;
     let todaysWorkouts = await Workout.find({ date: date });
-    res.render('workouts/show', { title: showDate, workoutId, category, firstExercise, todaysWorkouts });
+    res.render('workouts/show', { title: showDate, workoutId, firstCategory, firstExercise, todaysWorkouts });
 };
 
 async function newWorkout(req, res) {
     let curDate = req.params.id;
-    const categories = await Category.find({}).sort({ 'name': 1 });
+    const categories = (await findUserExercises(req, res)).categories;
     const exercises = [];
     const exInCurCategory = [];
     let curExercise
