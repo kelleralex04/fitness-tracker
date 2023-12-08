@@ -6,6 +6,7 @@ const ensureLoggedIn = require('../config/ensureLoggedIn');
 router.get('/', ensureLoggedIn, exercisesCtrl.index);
 router.get('/new', ensureLoggedIn, exercisesCtrl.new);
 router.get('/:id', ensureLoggedIn, exercisesCtrl.show);
+router.get('/:id/edit', ensureLoggedIn, exercisesCtrl.edit);
 router.post('/', ensureLoggedIn, exercisesCtrl.create);
 router.post('/categories', ensureLoggedIn, exercisesCtrl.newCategory);
 router.delete('/:id', ensureLoggedIn, exercisesCtrl.deleteExercise);

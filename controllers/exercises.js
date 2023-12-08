@@ -8,7 +8,8 @@ module.exports = {
     show,
     newCategory,
     deleteExercise,
-    deleteCategory
+    deleteCategory,
+    edit
 };
 
 async function findUserExercises(req, res) {
@@ -71,7 +72,7 @@ async function create(req, res) {
 
 async function show(req, res) {
     const exercise = await Exercise.findById(req.params.id);
-    res.render('exercises/show', { title: exercise.name, exercise, errorMsg: '' });
+    res.render('exercises/show', { title: exercise.name, exercise, id: req.params.id, errorMsg: '' });
 };
 
 async function newCategory(req, res) {
@@ -112,4 +113,8 @@ async function deleteCategory(req, res) {
     req.user.category.remove(req.params.id);
     await req.user.save();
     res.redirect('/exercises');
+}
+
+function edit(req, res) {
+    res.render('exercises/edit', { title: 'Edit Exercise', errorMsg: '' })
 }
