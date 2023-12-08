@@ -13,7 +13,11 @@ const setSchema = new Schema({
 
 const workoutSchema = new Schema({
     date: Date,
-    set: [setSchema]
+    set: [setSchema],
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
 }, {
     timestamps: true
 });

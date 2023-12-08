@@ -47,8 +47,11 @@ async function findUserExercises(req, res) {
     const exercises = [];
     for (const c of req.user.category) {
         const curCategory = await Category.findById(c);
-        if (curCategory.exercise[0]) {
-            categories.push(await Category.findById(c));
+        for (const e of req.user.exercise) {
+            if (curCategory.exercise.includes(e)) {
+                categories.push(curCategory);
+                break
+            };
         };
     };
     categories.sort(function(a,b) {
@@ -84,7 +87,7 @@ async function show(req, res) {
     let showDate = date.toDateString();
     let firstCategory = categories[0].name;
     let firstExercise = exercises[0].name;
-    let todaysWorkouts = await Workout.find({ date: date });
+    let todaysWorkouts = await Workout.find({ date: date, user: req.user._id });
     res.render('workouts/show', { title: showDate, workoutId, firstCategory, firstExercise, todaysWorkouts });
 };
 
@@ -116,7 +119,7 @@ async function newWorkout(req, res) {
         curExercise = await Exercise.findOne({ 'name': `${exInCurCategory[0].name}`});
     } else {
         curExercise = await Exercise.findOne({ 'name': `${req.query.curExercise}`});
-    } 
+    };
     res.render('workouts/new', { title: 'Add Exercise', curDate, categories, curCategory, exInCurCategory, curExercise });
 };
 
@@ -124,7 +127,7 @@ async function addExercise(req, res) {
     let workoutId = req.params.id;
     let temp = workoutId.match(/\d+/g);
     let showDate = new Date(temp[2], temp[0] - 1, temp[1]);
-    const workout = await Workout.create({ date: showDate, set: []});
+    const workout = await Workout.create({ date: showDate, set: [], user: req.user });
     workout.set.push(req.body)
     try {
         await workout.save();
