@@ -14,12 +14,20 @@ passport.use(new GoogleStrategy(
         try {
             let user = await User.findOne({ googleId: profile.id });
             if (user) return cb(null, user);
+            let categories = [];
+            categories.push(await Category.find({ name: 'Back' }));
+            categories.push(await Category.find({ name: 'Chest' }));
+            categories.push(await Category.find({ name: 'Legs' }));
             user = await User.create({
                 name: profile.displayName,
                 googleId: profile.id,
                 email: profile.emails[0].value,
                 avatar: profile.photos[0].value
             });
+            for (c of categories) {
+                user.category.push(c[0]);
+                await user.save();
+            };
             return cb(null, user);
             } catch (err) {
                 return cb(err);
