@@ -2,6 +2,9 @@
 
 <% categories.forEach(c => { %>
     <h1><%= c.name %></h1>
+    <form action="/exercises/<%= c._id %>/category?_method=DELETE" method="POST">
+        <button type="submit">X</button>
+    </form>
     <% exercises.forEach(e => { %>
         <% if (c.exercise.includes(e._id)) { %>
             <a href="/exercises/<%= e._id %>"><%= e.name %></a>

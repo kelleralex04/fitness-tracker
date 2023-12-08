@@ -7,7 +7,8 @@ module.exports = {
     create,
     show,
     newCategory,
-    deleteExercise
+    deleteExercise,
+    deleteCategory
 };
 
 async function findUserExercises(req, res) {
@@ -26,6 +27,17 @@ async function findUserExercises(req, res) {
         return 0
     });
     for (const e of req.user.exercise) {
+        let categoryCheck = false;
+        for (const c of categories) {
+            if (c.exercise.includes(e._id)) {
+                categoryCheck = true;
+                break;
+            };
+        };
+        if (!categoryCheck) {
+            req.user.exercise.remove(e);
+            await req.user.save();
+        }
         exercises.push(await Exercise.findById(e));
     };
     return { categories: categories, exercises: exercises }
@@ -67,6 +79,7 @@ async function newCategory(req, res) {
         const existingCategory = await Category.find({ name: req.body.name })
         if (!existingCategory[0]) {
             const category = await Category.create(req.body);
+            console.log(category)
             req.user.category.push(category);
         } else {
             let same = false;
@@ -78,7 +91,7 @@ async function newCategory(req, res) {
                 };
             };
             if (!same) {
-                req.user.category.push(existingCategory);
+                req.user.category.push(existingCategory[0]);
             };
         };
         await req.user.save();
@@ -91,6 +104,12 @@ async function newCategory(req, res) {
 
 async function deleteExercise(req, res) {
     req.user.exercise.remove(req.params.id);
+    await req.user.save();
+    res.redirect('/exercises');
+}
+
+async function deleteCategory(req, res) {
+    req.user.category.remove(req.params.id);
     await req.user.save();
     res.redirect('/exercises');
 }
