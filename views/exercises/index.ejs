@@ -5,6 +5,9 @@
     <% exercises.forEach(e => { %>
         <% if (c.exercise.includes(e._id)) { %>
             <a href="/exercises/<%= e._id %>"><%= e.name %></a>
+            <form action="/exercises/<%= e._id %>?_method=DELETE" method="POST">
+                <button type="submit">X</button>
+            </form>
         <% } %>
     <% }) %>
 <% }) %>

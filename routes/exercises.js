@@ -8,5 +8,6 @@ router.get('/new', ensureLoggedIn, exercisesCtrl.new);
 router.get('/:id', ensureLoggedIn, exercisesCtrl.show);
 router.post('/', ensureLoggedIn, exercisesCtrl.create);
 router.post('/categories', ensureLoggedIn, exercisesCtrl.newCategory);
+router.delete('/:id', ensureLoggedIn, exercisesCtrl.deleteExercise);
 
 module.exports = router;

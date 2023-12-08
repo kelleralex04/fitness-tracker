@@ -6,7 +6,8 @@ module.exports = {
     new: newExercise,
     create,
     show,
-    newCategory
+    newCategory,
+    deleteExercise
 };
 
 async function findUserExercises(req, res) {
@@ -63,12 +64,33 @@ async function show(req, res) {
 
 async function newCategory(req, res) {
     try {
-        const category = await Category.create(req.body);
-        req.user.category.push(category);
+        const existingCategory = await Category.find({ name: req.body.name })
+        if (!existingCategory[0]) {
+            const category = await Category.create(req.body);
+            req.user.category.push(category);
+        } else {
+            let same = false;
+            for (const c of req.user.category) {
+                const category = await Category.findById(c);
+                if (req.body.name === category.name) {
+                    same = true;
+                    break
+                };
+            };
+            if (!same) {
+                req.user.category.push(existingCategory);
+            };
+        };
         await req.user.save();
         res.redirect('/exercises/new');
-    } catch {
+    } catch(err) {
         console.log(err);
         res.render('exercises/new', { errorMsg: err.message })
     };
 };
+
+async function deleteExercise(req, res) {
+    req.user.exercise.remove(req.params.id);
+    await req.user.save();
+    res.redirect('/exercises');
+}

@@ -4,15 +4,15 @@ const passport = require('passport');
 const ensureLoggedIn = require('../config/ensureLoggedIn');
 
 router.get('/home', ensureLoggedIn, function(req, res) {
-  res.render('home', { title: 'Home Page'})
+  res.render('home', { title: 'Home Page'});
 });
 
 router.get('/', function(req, res, next) {
   if (req.user) {
-    res.redirect('/home', { title: 'Home Page'})
+    res.redirect('/home', { title: 'Home Page'});
   } else {
     res.redirect('/login');
-  }
+  };
 });
 
 router.get('/auth/google', passport.authenticate(
