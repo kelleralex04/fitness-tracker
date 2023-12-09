@@ -1,5 +1,50 @@
 <%- include('../partials/header') %>
-
-
+<form action="/exercises/<%= id %>?_method=PUT" method="POST">
+    <label>Exercise Name:</label>
+        <input type="text" name="name" value="<%= exercise.name %>">
+        <label>Category</label>
+        <select name="catName">
+            <% categories.forEach(c => { %>
+                <% if (c.name === exercise.catName) { %>
+                    <option value="<%= c.name %>" selected><%= c.name %></option>
+                <% } else { %>
+                    <option value="<%= c.name %>"><%= c.name %></option>
+                <% } %>
+            <% }) %>
+        </select>
+        <label>Type:</label>
+        <select name="exType" id="exType">
+            <% exTypes.forEach(t => { %>
+                <% if (t === exercise.exType) { %>
+                    <option value="<%= t %>" selected><%= t %></option>
+                <% } else { %>
+                    <option value="<%= t %>"><%= t %></option>
+                <% } %>
+            <% }); %>
+        </select>
+        <label>Weight Unit</label>
+        <select name="weightUnit">
+            <% weightUnits.forEach(w => { %>
+                <% if (w === exercise.weightUnit) { %>
+                    <option value="<%= w %>" selected><%= w %></option>
+                <% } else { %> 
+                    <option value="<%= w %>"><%= w %></option>
+                <% } %>
+            <% }); %>
+        </select>
+        <label>Distance Unit:</label>
+        <select name="distanceUnit">
+            <% distanceUnits.forEach(d => { %>
+                <% if (d === exercise.distanceUnit) { %>
+                    <option value="<%= d %>" selected><%= d %></option>
+                <% } else { %> 
+                    <option value="<%= d %>"><%= d %></option>
+                <% } %>
+            <% }); %>
+        </select>
+        <label>Description</label>
+        <input type="text" name="description" value="<%= exercise.description %>">
+        <input type="submit" value="Add Exercise">
+</form>
 
 <%- include('../partials/footer') %>

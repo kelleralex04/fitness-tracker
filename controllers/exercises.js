@@ -1,5 +1,8 @@
 const Exercise = require('../models/exercise');
 const Category = require('../models/category');
+const exTypes = ['Weight', 'Reps', 'Distance', 'Time', 'Weight and Reps', 'Distance and Time', 'Weight and Distance', 'Weight and Time', 'Reps and Distance', 'Reps and Time'];
+const weightUnits = ['lbs', 'kgs'];
+const distanceUnits = ['ft', 'mi', 'm', 'km'];
 
 module.exports = {
     index,
@@ -9,8 +12,10 @@ module.exports = {
     newCategory,
     deleteExercise,
     deleteCategory,
-    edit
+    edit,
+    update
 };
+
 
 async function findUserExercises(req, res) {
     const categories = [];
@@ -52,7 +57,7 @@ async function index(req, res) {
 
 async function newExercise(req, res) {
     categories = (await findUserExercises(req, res)).categories;
-    res.render('exercises/new', { title: 'New Exercise', errorMsg: '', categories});
+    res.render('exercises/new', { title: 'New Exercise', categories, exTypes, weightUnits, distanceUnits, errorMsg: '' });
 };
 
 async function create(req, res) {
@@ -115,6 +120,28 @@ async function deleteCategory(req, res) {
     res.redirect('/exercises');
 }
 
-function edit(req, res) {
-    res.render('exercises/edit', { title: 'Edit Exercise', errorMsg: '' })
+async function edit(req, res) {
+    const categories = (await findUserExercises(req, res)).categories;
+    const exercise = await Exercise.findById(req.params.id);
+    const id = req.params.id
+    res.render('exercises/edit', { title: 'Edit Exercise', exercise, categories, exTypes, weightUnits, distanceUnits, id, errorMsg: '' })
 }
+
+async function update(req, res) {
+    try {
+        const exercise = await Exercise.findById(req.params.id);
+        if (exercise.catName !== req.body.catName) {
+            const category = await Category.find({ name: exercise.catName });
+            category[0].exercise.remove(req.params.id);
+            await category[0].save();
+            const newCategory = await Category.find({ name: req.body.catName });
+            newCategory[0].exercise.push(exercise);
+            await newCategory[0].save();
+        };
+        await Exercise.findOneAndUpdate({ _id: req.params.id }, req.body);
+        res.redirect('/exercises');
+    } catch(err) {
+        console.log(err);
+        res.redirect('/exercises');
+    };
+};
