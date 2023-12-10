@@ -138,7 +138,23 @@ async function addExercise(req, res) {
             console.log(err);
         };
     } else {
-        workoutExists[0].set.push(req.body)
+        let exists = false;
+        for (const s of workoutExists[0].set) {
+            if (s.exerciseName === req.body.exerciseName) {
+                s.setsNum += parseInt(req.body.setsNum);
+                s.weight.push(req.body.weight);
+                s.reps.push(req.body.reps);
+                s.distance.push(req.body.distance);
+                s.timeH.push(req.body.timeH);
+                s.timeM.push(req.body.timeM);
+                s.timeS.push(req.body.timeS);
+                exists = true;
+                break
+            };
+        };
+        if (!exists) {
+            workoutExists[0].set.push(req.body)
+        }
         try {
             await workoutExists[0].save();
         } catch(err) {
