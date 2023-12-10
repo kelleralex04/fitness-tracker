@@ -120,19 +120,30 @@ async function newWorkout(req, res) {
     } else {
         curExercise = await Exercise.findOne({ 'name': `${req.query.curExercise}`});
     };
-    res.render('workouts/new', { title: 'Add Exercise', curDate, categories, curCategory, exInCurCategory, curExercise });
+    const setsNum = req.query.setsNum
+    res.render('workouts/new', { title: 'Add Exercise', curDate, categories, curCategory, exInCurCategory, curExercise, setsNum });
 };
 
 async function addExercise(req, res) {
     let workoutId = req.params.id;
     let temp = workoutId.match(/\d+/g);
     let showDate = new Date(temp[2], temp[0] - 1, temp[1]);
-    const workout = await Workout.create({ date: showDate, set: [], user: req.user });
-    workout.set.push(req.body)
-    try {
-        await workout.save();
-    } catch(err) {
-        console.log(err);
+    const workoutExists = await Workout.find({ date: showDate, user: req.user})
+    if (!workoutExists[0]) {
+        const workout = await Workout.create({ date: showDate, set: [], user: req.user});
+        workout.set.push(req.body)
+        try {
+            await workout.save();
+        } catch(err) {
+            console.log(err);
+        };
+    } else {
+        workoutExists[0].set.push(req.body)
+        try {
+            await workoutExists[0].save();
+        } catch(err) {
+            console.log(err);
+        };
     };
     res.redirect(`/workouts/${req.params.id}`)
 };

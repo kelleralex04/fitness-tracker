@@ -1,26 +1,53 @@
 <%- include('../partials/header') %>
 
-<% todaysWorkouts.forEach(w => { %>
-    <% w.set.forEach(s => { %>
-        <h3><%= s.exerciseName %></h3>
-        <% if (s.weight) { %>
-            <div>Weight: <%= s.weight %></div>
-        <% } %>
-        <% if (s.reps) { %>
-            <div>Reps: <%= s.reps %></div>
-        <% } %>
-        <% if (s.distance) { %>
-            <div>Distance: <%= s.distance %></div>
-        <% } %>
-        <% if (s.time) { %>
-            <div>Time: <%= s.time %></div>
-        <% } %>
+<table>
+    <% todaysWorkouts.forEach(w => { %>
+        <% w.set.forEach(s => { %>
+            <h3><%= s.exerciseName %></h3>
+            <thead>
+                <tr>
+                    <th>Set #</th>
+                    <% if (s.weight[0]) { %>
+                        <th>Weight</th>
+                    <% } %>
+                    <% if (s.reps[0]) { %>
+                        <th>Reps</th>
+                    <% } %>
+                    <% if (s.distance[0]) { %>
+                        <th>Distance</th>
+                    <% } %>
+                    <% if (s.time[0]) { %>
+                        <th>Time</th>
+                    <% } %>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (let i = 0; i < s.setsNum; i++) { %>
+                    <tr>
+                        <td><%= i + 1 %></td>
+                        <% if (s.weight[0]) { %>
+                            <td><%= s.weight[i] %></td>
+                        <% } %>
+                        <% if (s.reps[0]) { %>
+                            <td><%= s.reps[i] %></td>
+                        <% } %>
+                        <% if (s.distance[0]) { %>
+                            <td><%= s.distance[i] %></td>
+                        <% } %>
+                        <% if (s.time[0]) { %>
+                            <td><%= s.time[i] %></td>
+                        <% } %>
+                    </tr>
+                <% } %>
+            </tbody>
+        <% }) %>
     <% }) %>
-<% }) %>
+</table>
 
 <form action="/workouts/<%= workoutId %>/exercises/new" method="GET">
     <input type="hidden" name="curCategory" value="<%= firstCategory %>">
     <input type="hidden" name="curExercise" value="<%= firstExercise %>">
+    <input type="hidden" name="setsNum" value="1">
     <button type="submit">Add Exercise</button>
 </form>
 
