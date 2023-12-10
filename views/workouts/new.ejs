@@ -43,15 +43,19 @@
     <% for (let i = 0; i < setsNum; i++) { %>
         <% if (curExercise.exType.includes('Weight')) { %>
             <input type="number" name="weight" placeholder="Weight" required><%= curExercise.weightUnit %>
+            <input type="hidden" name="weightUnit" value="<%= curExercise.weightUnit %>">
         <% } %>
         <% if (curExercise.exType.includes('Reps')) { %>
-            <input type="number" name="reps" placeholder="Reps" required>
+            <input type="number" name="reps" placeholder="Reps" min="0" max="999" maxlength="3" required>
         <% } %>
         <% if (curExercise.exType.includes('Time')) { %>
-            <input type="number" name="time" placeholder="Time" required>
+            <input type="number" name="timeH" value="00" min="0" max="99" maxlength="2" required>hh
+            <input type="number" name="timeM" value="00" min="0" max="59" maxlength="2" required>mm
+            <input type="number" name="timeS" value="00" min="0" max="59" maxlength="2" required>ss
         <% } %>
         <% if (curExercise.exType.includes('Distance')) { %>
-            <input type="number" name="distance" placeholder="Distance" required><%= curExercise.distanceUnit %>
+            <input type="number" name="distance" placeholder="Distance" min="0" max="999" maxlength="3" required><%= curExercise.distanceUnit %>
+            <input type="hidden" name="distanceUnit" value="<%= curExercise.distanceUnit %>">
         <% } %>
         <br>
     <% } %>

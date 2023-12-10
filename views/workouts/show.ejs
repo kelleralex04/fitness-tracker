@@ -3,8 +3,11 @@
 <table>
     <% todaysWorkouts.forEach(w => { %>
         <% w.set.forEach(s => { %>
-            <h3><%= s.exerciseName %></h3>
             <thead>
+                <tr>
+                    <th></th>
+                    <th><%= s.exerciseName %></th>
+                </tr>
                 <tr>
                     <th>Set #</th>
                     <% if (s.weight[0]) { %>
@@ -16,7 +19,7 @@
                     <% if (s.distance[0]) { %>
                         <th>Distance</th>
                     <% } %>
-                    <% if (s.time[0]) { %>
+                    <% if (s.timeH[0] || s.timeM[0] || s.timeS[0]) { %>
                         <th>Time</th>
                     <% } %>
                 </tr>
@@ -26,16 +29,16 @@
                     <tr>
                         <td><%= i + 1 %></td>
                         <% if (s.weight[0]) { %>
-                            <td><%= s.weight[i] %></td>
+                            <td><%= s.weight[i] %> <%= s.weightUnit[0] %></td>
                         <% } %>
                         <% if (s.reps[0]) { %>
                             <td><%= s.reps[i] %></td>
                         <% } %>
                         <% if (s.distance[0]) { %>
-                            <td><%= s.distance[i] %></td>
+                            <td><%= s.distance[i] %> <%= s.distanceUnit[0] %></td>
                         <% } %>
-                        <% if (s.time[0]) { %>
-                            <td><%= s.time[i] %></td>
+                        <% if (s.timeH[0] || s.timeM[0] || s.timeS[0]) { %>
+                            <td><%= s.timeH[i].padStart(2, '0') %>:<%= s.timeM[i].padStart(2, '0') %>:<%= s.timeS[i].padStart(2, '0') %></td>
                         <% } %>
                     </tr>
                 <% } %>

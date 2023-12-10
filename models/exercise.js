@@ -3,10 +3,6 @@ const Schema = mongoose.Schema;
 
 const exerciseSchema = new Schema({
     name: String,
-    weight: Number,
-    reps: Number,
-    distance: Number,
-    time: Number,
     catName: String,
     exType: {
         type: String,
