@@ -122,7 +122,7 @@ async function newWorkout(req, res) {
     } else {
         curExercise = await Exercise.findOne({ 'name': `${req.query.curExercise}`});
     };
-    const setsNum = req.query.setsNum
+    const setsNum = req.query.setsNum;
     res.render('workouts/new', { title: 'Add Exercise', curDate, categories, curCategory, exInCurCategory, curExercise, setsNum });
 };
 
@@ -163,7 +163,7 @@ async function addExercise(req, res) {
             console.log(err);
         };
     };
-    res.redirect(`/workouts/${req.params.id}`)
+    res.redirect(`/workouts/${req.params.id}`);
 };
 
 async function edit(req, res) {
@@ -176,12 +176,16 @@ async function edit(req, res) {
             };
         });
         const set = curSet[0];
+        let setsNum = parseInt(req.query.setsNum);
         const curDate = req.query.curDate;
-        res.render('workouts/edit', { title: 'Edit Workout', set, curDate, workoutId })
+        if (req.query.addSet) {
+            setsNum += 1;
+        };
+        res.render('workouts/edit', { title: 'Edit Workout', set, curDate, workoutId, setsNum });
     } catch(err) {
-        console.log(err)
-        res.redirect('/home')
-    }
+        console.log(err);
+        res.redirect('/home');
+    };
 };
 
 async function update(req, res) {
@@ -190,6 +194,7 @@ async function update(req, res) {
         const workout = await Workout.find({ "set._id": workoutId })
         for (let i = 0; i < workout[0].set.length; i++) {
             if (String(workout[0].set[i]._id) === req.params.id) {
+                workout[0].set[i].setsNum = req.body.setsNum
                 workout[0].set[i].weight = req.body.weight
                 workout[0].set[i].reps = req.body.reps
                 workout[0].set[i].distance = req.body.distance

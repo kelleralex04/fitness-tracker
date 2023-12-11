@@ -2,9 +2,9 @@
 
 <form action="/workouts/<%= workoutId %>" method="POST">
     <h3><%= set.exerciseName %></h3>
-    <% for (let i = 0; i < set.setsNum; i++) { %>
+    <% for (let i = 0; i < setsNum; i++) { %>
         <% if (set.weight[0]) { %>
-            <input type="number" name="weight" value="<%= set.weight[i]%>" required><%= set.weightUnit %>
+            <input type="number" name="weight" value="<%= set.weight[i]%>" min="0" max="9999" step=".1" required><%= set.weightUnit %>
             <input type="hidden" name="weightUnit" value="<%= set.weightUnit %>">
         <% } %>
         <% if (set.reps[0]) { %>
@@ -16,14 +16,17 @@
             <input type="number" name="timeS" value="<%= set.timeS[i] %>" min="0" max="59" maxlength="2" required>ss
         <% } %>
         <% if (set.distance[0]) { %>
-            <input type="number" name="distance" value="<%= set.distance[i] %>" min="0" max="999" maxlength="3" required><%= set.distanceUnit %>
+            <input type="number" name="distance" value="<%= set.distance[i] %>" min="0" max="999" step=".01" required><%= set.distanceUnit %>
             <input type="hidden" name="distanceUnit" value="<%= set.distanceUnit %>">
         <% } %>
         <br>
     <% } %>
-    <input type="hidden" name="setsNum" value="<%= set.setsNum %>">
+    <input type="hidden" name="setsNum" value="<%= setsNum %>">
     <input type="hidden" name="exerciseName" value="<%= set.exerciseName %>">
     <input type="hidden" name="curDate" value="<%= curDate %>">
+    <button>
+        <a href="/workouts/<%= workoutId %>/edit?curDate=<%= curDate %>&setsNum=<%= setsNum %>&addSet=true">Add Set</a>
+    </button>
     <button type="submit">Save Workout</button>
 </form>
 
