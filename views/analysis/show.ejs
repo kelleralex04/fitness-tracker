@@ -12,17 +12,28 @@
     new Chart(ctx, {
     type: 'line',
     data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: <%- JSON.stringify(workoutDates) %>,
         datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
+        label: 'Max Weight',
+        data: <%- JSON.stringify(workoutMaxWeights) %>,
         borderWidth: 1
         }]
     },
     options: {
         scales: {
+        xAxes: [{
+            type: 'time',
+            time: {
+                parser: 'MM/DD/YYYY'
+            }
+        }],
         y: {
-            beginAtZero: true
+            beginAtZero: true,
+            suggestedMax: <%- JSON.stringify(yMax) %>,
+            title: {
+                display: true,
+                text: 'Weight'
+            }
         }
         }
     }

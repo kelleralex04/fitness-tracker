@@ -1,5 +1,6 @@
 const Exercise = require('../models/exercise');
 const Category = require('../models/category');
+const Workout = require('../models/workout');
 
 module.exports = {
     index,
@@ -58,5 +59,28 @@ async function index(req, res) {
 
 async function show(req, res) {
     const exercise = await Exercise.findById(req.params.id);
-    res.render('analysis/show', { title: exercise.name, exercise })
+    const workouts = await Workout.find({ 'set.exerciseName': exercise.name }).sort({ date: 1 });
+    const workoutDates = [];
+    const workoutMaxWeights = [];
+    for (w of workouts) {
+        const date = w.date.toLocaleDateString();
+        workoutDates.push(date);
+        for (s of w.set) {
+            if (s.exerciseName === exercise.name) {
+                const maxWeight = Math.max(...s.weight);
+                if (workoutMaxWeights.length) {
+                    if (maxWeight > Math.max(...workoutMaxWeights)) {
+                        workoutMaxWeights.push(maxWeight);
+                    } else {
+                        workoutMaxWeights.push(Math.max(...workoutMaxWeights));
+                    };
+                } else {
+                    workoutMaxWeights.push(maxWeight);
+                };
+            };
+        };
+    };
+    console.log(workoutDates, workoutMaxWeights)
+    const yMax = Math.max(...workoutMaxWeights) + 10;
+    res.render('analysis/show', { title: exercise.name, exercise, workouts, workoutDates, workoutMaxWeights, yMax })
 }

@@ -17,6 +17,7 @@ var exercisesRouter = require('./routes/exercises');
 var workoutsRouter = require('./routes/workouts');
 var analysisRouter = require('./routes/analysis');
 
+
 var app = express();
 
 // view engine setup
