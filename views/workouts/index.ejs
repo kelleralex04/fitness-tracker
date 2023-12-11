@@ -14,6 +14,7 @@
                 <a href="/home">HOME</a> |
                 <a href="/workouts">WORKOUTS</a> |
                 <a href="/exercises">EXERCISES</a> |
+                <a href="/analysis">ANALYSIS</a> |
                 <a href="/logout">LOG OUT</a>
             </nav>
             <div class="wrapper">
@@ -46,7 +47,11 @@
                             <% if (i === today[0] && curMonth === today[1] && curYear === today[2]) { %>
                                 <% isToday = 'active' %>
                             <% } %>
-                            <li class="<%= isToday %>"><a href="/workouts/m<%= curMonth + 1 %>d<%= i %>y<%= curYear %>"><%= i %></a></li>
+                            <li class="<%= isToday %>"><a href="/workouts/m<%= curMonth + 1 %>d<%= i %>y<%= curYear %>"><%= i %>
+                            <% if (workoutDays.includes(i)) { %>
+                                *
+                            <% } %>
+                            </a></li>
                         <% } %>
                         <% for (let i = lastDayOfMonth; i < 6; i++) { %>
                             <li class="inactive"><%= i - lastDayOfMonth + 1 %></li>

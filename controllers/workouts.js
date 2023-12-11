@@ -21,7 +21,7 @@ curMonth = date.getMonth();
 curYear = date.getFullYear();
 let today = [date.getDate(), date.getMonth(), date.getFullYear()];
 
-function index(req, res) {
+async function index(req, res) {
     let firstDayOfMonth = new Date(curYear, curMonth, 1).getDay();
     let lastDateOfMonth = new Date(curYear, curMonth + 1, 0).getDate();
     let lastDayOfMonth = new Date(curYear, curMonth, lastDateOfMonth).getDay();
@@ -34,7 +34,13 @@ function index(req, res) {
     };
 
     curMonthText = months[curMonth];
-    res.render('workouts/index', { title: 'Workouts', curMonthText, curYear, lastDateOfMonth, firstDayOfMonth, lastDateOfPrevMonth, lastDayOfMonth, today });
+
+    const workoutDays = [];
+    const workoutsThisMonth = await Workout.find({ date: { $gte: `${curYear}-${curMonth + 1}-1`, $lte: `${curYear}-${curMonth + 1}-${lastDateOfMonth}` }})
+    for (w of workoutsThisMonth) {
+        workoutDays.push(w.date.getDate());
+    };
+    res.render('workouts/index', { title: 'Workouts', curMonthText, curYear, lastDateOfMonth, firstDayOfMonth, lastDateOfPrevMonth, lastDayOfMonth, today, workoutDays });
 };
 
 function calendar(req, res) {
