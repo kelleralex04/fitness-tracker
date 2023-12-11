@@ -151,7 +151,7 @@ async function update(req, res) {
             await newCategory[0].save();
         };
         await Exercise.findOneAndUpdate({ _id: req.params.id }, req.body);
-        res.redirect(`/exercises/${req.params.id}`);
+        res.redirect('/exercises');
     } catch(err) {
         console.log(err);
         res.redirect('/exercises');

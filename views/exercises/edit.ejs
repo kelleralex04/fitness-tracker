@@ -43,8 +43,8 @@
             <% }); %>
         </select>
         <label>Description</label>
-        <textarea type="text" name="description"><%= exercise.description %></textarea>
-        <input type="submit" value="Save Exercise">
+        <input type="text" name="description" value="<%= exercise.description %>">
+        <input type="submit" value="Add Exercise">
 </form>
 
 <%- include('../partials/footer') %>
