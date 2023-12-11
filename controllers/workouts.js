@@ -10,7 +10,8 @@ module.exports = {
     new: newWorkout,
     addExercise,
     edit,
-    update
+    update,
+    delete: deleteSet
 };
 
 let date = new Date();
@@ -178,9 +179,6 @@ async function edit(req, res) {
         const set = curSet[0];
         let setsNum = parseInt(req.query.setsNum);
         const curDate = req.query.curDate;
-        if (req.query.addSet) {
-            setsNum += 1;
-        };
         res.render('workouts/edit', { title: 'Edit Workout', set, curDate, workoutId, setsNum });
     } catch(err) {
         console.log(err);
@@ -191,23 +189,62 @@ async function edit(req, res) {
 async function update(req, res) {
     try {
         const workoutId = req.params.id;
-        const workout = await Workout.find({ "set._id": workoutId })
-        for (let i = 0; i < workout[0].set.length; i++) {
-            if (String(workout[0].set[i]._id) === req.params.id) {
-                workout[0].set[i].setsNum = req.body.setsNum
-                workout[0].set[i].weight = req.body.weight
-                workout[0].set[i].reps = req.body.reps
-                workout[0].set[i].distance = req.body.distance
-                workout[0].set[i].timeH = req.body.timeH
-                workout[0].set[i].timeM = req.body.timeM
-                workout[0].set[i].timeS = req.body.timeS
-                await workout[0].save();
+        let workout = await Workout.find({ "set._id": workoutId });
+        workout = workout[0]
+        for (let i = 0; i < workout.set.length; i++) {
+            if (String(workout.set[i]._id) === req.params.id) {
+                workout.set[i].setsNum = req.body.setsNum
+                workout.set[i].weight = req.body.weight
+                workout.set[i].reps = req.body.reps
+                workout.set[i].distance = req.body.distance
+                workout.set[i].timeH = req.body.timeH
+                workout.set[i].timeM = req.body.timeM
+                workout.set[i].timeS = req.body.timeS
+                await workout.save();
                 break
             };
         };
         res.redirect(`/workouts/${req.body.curDate}`)
     } catch(err) {
-        console.log(err)
-        res.redirect('/home')
-    }
-}
+        console.log(err);
+        res.redirect('/home');
+    };
+};
+
+async function deleteSet(req, res) {
+    try {
+        const workoutId = req.params.id;
+        let workout = await Workout.find({ "set._id": workoutId });
+        let idx
+        let setsNum = parseInt(req.query.setsNum);
+        const deleteIdx = req.body.deleteIdx;
+        workout = workout[0];
+        for (let i = 0; i < workout.set.length; i++) {
+            if (String(workout.set[i]._id) === req.params.id) {
+                workout.set[i].setsNum -= 1;
+                if (workout.set[i].weight[0]) {
+                    workout.set[i].weight.splice(deleteIdx, 1);
+                };
+                if (workout.set[i].distance[0]) {
+                    workout.set[i].distance.splice(deleteIdx, 1);
+                };
+                if (workout.set[i].reps[0]) {
+                    workout.set[i].reps.splice(deleteIdx, 1);
+                };
+                if (workout.set[i].timeH[0]) {
+                    workout.set[i].timeH.splice(deleteIdx, 1);
+                    workout.set[i].timeM.splice(deleteIdx, 1);
+                    workout.set[i].timeS.splice(deleteIdx, 1);
+                };
+                await workout.save();
+                idx = i;
+                setsNum -= 1;
+                break
+            };
+        };
+        res.redirect(`/workouts/${workoutId}/edit?curDate=${req.query.curDate}&setsNum=${setsNum}`)
+    } catch(err) {
+        console.log(err);
+        res.redirect('/home');
+    };
+};

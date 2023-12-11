@@ -10,5 +10,6 @@ router.get('/:id', ensureLoggedIn, workoutsCtrl.show);
 router.post('/calendar', ensureLoggedIn, workoutsCtrl.calendar);
 router.post('/:id/exercises', ensureLoggedIn, workoutsCtrl.addExercise);
 router.post('/:id', ensureLoggedIn, workoutsCtrl.update);
+router.delete('/:id', ensureLoggedIn, workoutsCtrl.delete);
 
 module.exports = router;
