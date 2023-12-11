@@ -42,7 +42,7 @@
     <h3><%= curExercise.name %></h3>
     <% for (let i = 0; i < setsNum; i++) { %>
         <% if (curExercise.exType.includes('Weight')) { %>
-            <input type="number" name="weight" placeholder="Weight" required><%= curExercise.weightUnit %>
+            <input type="number" name="weight" placeholder="Weight" min="0" max="9999" maxlength="4" required><%= curExercise.weightUnit %>
             <input type="hidden" name="weightUnit" value="<%= curExercise.weightUnit %>">
         <% } %>
         <% if (curExercise.exType.includes('Reps')) { %>

@@ -1,0 +1,31 @@
+<%- include('../partials/header') %>
+
+<form action="/workouts/<%= workoutId %>" method="POST">
+    <h3><%= set.exerciseName %></h3>
+    <% for (let i = 0; i < set.setsNum; i++) { %>
+        <% if (set.weight[0]) { %>
+            <input type="number" name="weight" value="<%= set.weight[i]%>" required><%= set.weightUnit %>
+            <input type="hidden" name="weightUnit" value="<%= set.weightUnit %>">
+        <% } %>
+        <% if (set.reps[0]) { %>
+            <input type="number" name="reps" value="<%= set.reps[i] %>" min="0" max="999" maxlength="3" required>
+        <% } %>
+        <% if (set.timeH[0]) { %>
+            <input type="number" name="timeH" value="<%= set.timeH[i] %>" min="0" max="99" maxlength="2" required>hh
+            <input type="number" name="timeM" value="<%= set.timeM[i] %>" min="0" max="59" maxlength="2" required>mm
+            <input type="number" name="timeS" value="<%= set.timeS[i] %>" min="0" max="59" maxlength="2" required>ss
+        <% } %>
+        <% if (set.distance[0]) { %>
+            <input type="number" name="distance" value="<%= set.distance[i] %>" min="0" max="999" maxlength="3" required><%= set.distanceUnit %>
+            <input type="hidden" name="distanceUnit" value="<%= set.distanceUnit %>">
+        <% } %>
+        <br>
+    <% } %>
+    <input type="hidden" name="setsNum" value="<%= set.setsNum %>">
+    <input type="hidden" name="exerciseName" value="<%= set.exerciseName %>">
+    <input type="hidden" name="curDate" value="<%= curDate %>">
+    <button type="submit">Save Workout</button>
+</form>
+
+
+<%- include('../partials/footer') %>

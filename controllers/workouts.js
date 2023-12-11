@@ -8,7 +8,9 @@ module.exports = {
     calendar,
     show,
     new: newWorkout,
-    addExercise
+    addExercise,
+    edit,
+    update
 };
 
 let date = new Date();
@@ -163,3 +165,44 @@ async function addExercise(req, res) {
     };
     res.redirect(`/workouts/${req.params.id}`)
 };
+
+async function edit(req, res) {
+    try {
+        const workoutId = req.params.id;
+        const workout = await Workout.find({ "set._id": workoutId })
+        const curSet = workout[0].set.filter(s => {
+            if (workoutId === String(s._id)) {
+                return true
+            };
+        });
+        const set = curSet[0];
+        const curDate = req.query.curDate;
+        res.render('workouts/edit', { title: 'Edit Workout', set, curDate, workoutId })
+    } catch(err) {
+        console.log(err)
+        res.redirect('/home')
+    }
+};
+
+async function update(req, res) {
+    try {
+        const workoutId = req.params.id;
+        const workout = await Workout.find({ "set._id": workoutId })
+        for (let i = 0; i < workout[0].set.length; i++) {
+            if (String(workout[0].set[i]._id) === req.params.id) {
+                workout[0].set[i].weight = req.body.weight
+                workout[0].set[i].reps = req.body.reps
+                workout[0].set[i].distance = req.body.distance
+                workout[0].set[i].timeH = req.body.timeH
+                workout[0].set[i].timeM = req.body.timeM
+                workout[0].set[i].timeS = req.body.timeS
+                await workout[0].save();
+                break
+            };
+        };
+        res.redirect(`/workouts/${req.body.curDate}`)
+    } catch(err) {
+        console.log(err)
+        res.redirect('/home')
+    }
+}
