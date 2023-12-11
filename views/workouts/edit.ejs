@@ -1,10 +1,12 @@
 <%- include('../partials/header') %>
-<form action="/workouts/<%= workoutId %>?curDate=<%= curDate %>&setsNum=<%= setsNum %>&_method=DELETE" method="POST" id="deleteForm"></form>
+<form action="/workouts/<%= workoutId %>/deleteSet?curDate=<%= curDate %>&setsNum=<%= setsNum %>&_method=DELETE" method="POST" id="deleteForm"></form>
+<form action="/workouts/<%= workoutId %>?curDate=<%= curDate %>&_method=DELETE" method="POST" id="deleteWorkoutForm"></form>
 <form action="/workouts/<%= workoutId %>" method="POST" id="postForm">
     <table>
         <thead>
             <tr>
                 <th><%= set.exerciseName %></th>
+                <th><button type="submit" form="deleteWorkoutForm">X</button></th>
             </tr>
         </thead>
         <% for (let i = 0; i < setsNum; i++) { %>
@@ -25,7 +27,9 @@
                     <th><input type="number" name="distance" value="<%= set.distance[i] %>" min="0" max="999" step=".01" required><%= set.distanceUnit %></th>
                     <input type="hidden" name="distanceUnit" value="<%= set.distanceUnit %>">
                 <% } %>
-                <th><button type="submit" name="deleteIdx" value="<%= i %>" form="deleteForm" >X</button></th>
+                <% if (setsNum > 1) { %>
+                    <th><button type="submit" name="deleteIdx" value="<%= i %>" form="deleteForm" >X</button></th>
+                <% } %>
             </tr>
         <% } %>
         <input type="hidden" name="setsNum" value="<%= setsNum %>">

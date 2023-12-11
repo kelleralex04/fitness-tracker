@@ -11,7 +11,8 @@ module.exports = {
     addExercise,
     edit,
     update,
-    delete: deleteSet
+    delete: deleteSet,
+    deleteWorkout
 };
 
 let date = new Date();
@@ -246,5 +247,27 @@ async function deleteSet(req, res) {
     } catch(err) {
         console.log(err);
         res.redirect('/home');
+    };
+};
+
+async function deleteWorkout(req, res) {
+    try {
+        const workoutId = req.params.id;
+        let workout = await Workout.find({ "set._id": workoutId });
+        workout = workout[0];
+        for (let i = 0; i < workout.set.length; i++) {
+            if (String(workout.set[i]._id) === req.params.id) {
+                workout.set.splice(i, 1);
+                await workout.save();
+                break
+            };
+        };
+        if (!workout.set.length) {
+            Workout.deleteOne({ _id: workout._id }).then();
+        };
+        res.redirect(`/workouts/${req.query.curDate}`)
+    } catch(err) {
+        console.log(err);
+        res.redirect('/workouts');
     };
 };
