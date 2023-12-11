@@ -52,6 +52,18 @@ async function findUserExercises(req, res) {
 async function index(req, res) {
     const categories = (await findUserExercises(req, res)).categories;
     const exercises = (await findUserExercises(req, res)).exercises;
+    for (let i = 0; i < categories.length; i++) {
+        let categoryCheck = false;
+        for (e of exercises) {
+            if (categories[i].exercise.includes(e._id)) {
+                categoryCheck = true;
+                break;
+            };
+        };
+        if (!categoryCheck) {
+            categories.splice(i, 1);
+        };
+    };
     res.render('exercises/index', { title: 'All Exercises' , categories, exercises });
 };
 
