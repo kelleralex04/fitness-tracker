@@ -1,6 +1,7 @@
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   margin: 0;
+  position: relative;
 }
 
 a {
@@ -90,11 +91,25 @@ header .currentDate {
 .navBarLink {
   display: inline;
   color: white;
-  padding: 20px 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   border-right: 1px solid #bbb;
   margin-left: -4px;
+}
+
+.navBarLink > a {
+  padding: 20px 20px;
 }
 
 .navBarLink:hover {
   background-color: red;
 }
+
+.exercisesIndex {
+  display: grid;
+  width: 80vw;
+  margin: auto;
+  grid-template-columns: 2vw 15vw;
+  grid-template-rows: auto;
+  align-items: center;
+};

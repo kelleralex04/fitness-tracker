@@ -1,23 +1,32 @@
 <%- include('../partials/header') %>
-
+<div style="text-align: center;">
+    <button>
+        <a href="/exercises/new">New Exercise</a>
+    </button>
+</div>
 <% categories.forEach(c => { %>
-    <h1><%= c.name %></h1>
-    <form action="/exercises/<%= c._id %>/category?_method=DELETE" method="POST">
-        <button type="submit">X</button>
-    </form>
-    <% exercises.forEach(e => { %>
-        <% if (c.exercise.includes(e._id)) { %>
-            <a href="/exercises/<%= e._id %>"><%= e.name %></a>
-            <form action="/exercises/<%= e._id %>?_method=DELETE" method="POST">
-                <button type="submit">X</button>
+    <div class="exercisesIndex">
+        <div>
+            <form action="/exercises/<%= c._id %>/category?_method=DELETE" method="POST">
+                <button type="submit" style="font-size: 10px; height: 20px;">X</button>
             </form>
-        <% } %>
-    <% }) %>
+        </div>
+        <div>
+            <h1><%= c.name %></h1>
+        </div>
+        <% exercises.forEach(e => { %>
+            <% if (c.exercise.includes(e._id)) { %>
+                <div>
+                    <form action="/exercises/<%= e._id %>?_method=DELETE" method="POST">
+                        <button type="submit" style="font-size: 10px; height: 20px;">X</button>
+                    </form>
+                </div>
+                <div>
+                    <a href="/exercises/<%= e._id %>"><%= e.name %></a>
+                </div>
+            <% } %>
+        <% }) %>
+    </div>
 <% }) %>
-
-<br><br><br>
-<button>
-    <a href="/exercises/new">New Exercise</a>
-</button>
 
 <%- include('../partials/footer') %>
