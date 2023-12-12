@@ -36,7 +36,7 @@ async function index(req, res) {
     curMonthText = months[curMonth];
 
     const workoutDays = [];
-    const workoutsThisMonth = await Workout.find({ date: { $gte: `${curYear}-${curMonth + 1}-1`, $lte: `${curYear}-${curMonth + 1}-${lastDateOfMonth}` }})
+    const workoutsThisMonth = await Workout.find({ date: { $gte: `${curYear}-${curMonth + 1}-1`, $lte: `${curYear}-${curMonth + 1}-${lastDateOfMonth}` }, user: req.user })
     for (w of workoutsThisMonth) {
         workoutDays.push(w.date.getDate());
     };
