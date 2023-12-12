@@ -1,39 +1,42 @@
 <%- include('../partials/header') %>
-<form id="new-form" action="/exercises" method="POST">
-    <label>Exercise Name:</label>
-    <input type="text" name="name">
-    <label>Category</label>
-    <select name="catName">
-        <% categories.forEach(c => { %>
-            <option value="<%= c.name %>"><%= c.name %></option>
-        <% }) %>
-    </select>
-    <label>Type:</label>
-    <select name="exType" id="exType">
-        <% exTypes.forEach(t => { %>
-            <option value="<%= t %>"><%= t %></option>
-        <% }); %>
-    </select>
-    <label>Weight Unit</label>
-    <select name="weightUnit">
-        <% weightUnits.forEach(w => { %>
-            <option value="<%= w %>"><%= w %></option>
-        <% }); %>
-    </select>
-    <label>Distance Unit:</label>
-    <select name="distanceUnit">
-        <% distanceUnits.forEach(d => { %>
-            <option value="<%= d %>"><%= d %></option>
-        <% }); %>
-    </select>
-    <label>Description</label>
-    <textarea rows="5" cols="50"></textarea>
-    <input type="submit" value="Add Exercise">
-</form>
 
-<form action="/exercises/categories" method="post">
-    <input type="text" name="name">
-    <input type="submit" value="Add New Category">
-</form>
+<div style="width: 80vw; margin: auto;">
+    <form id="new-form" action="/exercises" method="POST">
+        <label>Exercise Name:</label>
+        <input type="text" name="name">
+        <label>Category</label>
+        <select name="catName">
+            <% categories.forEach(c => { %>
+                <option value="<%= c.name %>"><%= c.name %></option>
+            <% }) %>
+        </select>
+        <label>Type:</label>
+        <select name="exType" id="exType">
+            <% exTypes.forEach(t => { %>
+                <option value="<%= t %>"><%= t %></option>
+            <% }); %>
+        </select>
+        <label>Weight Unit</label>
+        <select name="weightUnit">
+            <% weightUnits.forEach(w => { %>
+                <option value="<%= w %>"><%= w %></option>
+            <% }); %>
+        </select>
+        <label>Distance Unit:</label>
+        <select name="distanceUnit">
+            <% distanceUnits.forEach(d => { %>
+                <option value="<%= d %>"><%= d %></option>
+            <% }); %>
+        </select>
+        <label>Description</label>
+        <textarea rows="5" cols="50"></textarea>
+        <input type="submit" value="Add Exercise">
+    </form>
+    
+    <form action="/exercises/categories" method="post">
+        <input type="text" name="name">
+        <input type="submit" value="Add New Category">
+    </form>
+</div>
 
 <%- include('../partials/footer') %>

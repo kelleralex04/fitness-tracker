@@ -1,15 +1,17 @@
 <%- include('../partials/header') %>
-
-<div><%= exercise.exType %></div>
-<% if (exercise.exType.includes('Weight')) { %>
-    <div><%= exercise.weightUnit %></div>
-<% } %>
-<% if (exercise.exType.includes('Distance')) { %>
-    <div><%= exercise.distanceUnit %></div>
-<% } %>
-<div><%= exercise.description %></div>
-<button>
-    <a href="/exercises/<%= id %>/edit">Edit Exercise</a>
-</button>
+<div style="width: 50vw; margin: auto;">
+    <div>Exercise Type: <%= exercise.exType %></div>
+    <% if (exercise.exType.includes('Weight')) { %>
+        <div>Weight Unit: <%= exercise.weightUnit %></div>
+    <% } %>
+    <% if (exercise.exType.includes('Distance')) { %>
+        <div>Distance Unit: <%= exercise.distanceUnit %></div>
+    <% } %>
+    <div><%= exercise.description %></div>
+    <br>
+    <button>
+        <a href="/exercises/<%= id %>/edit">Edit Exercise</a>
+    </button>
+</div>
 
 <%- include('../partials/footer') %>

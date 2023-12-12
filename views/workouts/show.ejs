@@ -1,57 +1,59 @@
 <%- include('../partials/header') %>
 
-<table>
-    <% todaysWorkouts.forEach(w => { %>
-        <% w.set.forEach(s => { %>
-            <thead>
-                <tr>
-                    <th></th>
-                    <th><a href="/workouts/<%= s.id %>/edit?curDate=<%= workoutId %>&setsNum=<%= s.setsNum %>"><%= s.exerciseName %></a></th>
-                </tr>
-                <tr>
-                    <th>Set #</th>
-                    <% if (s.weight[0]) { %>
-                        <th>Weight</th>
-                    <% } %>
-                    <% if (s.reps[0]) { %>
-                        <th>Reps</th>
-                    <% } %>
-                    <% if (s.distance[0]) { %>
-                        <th>Distance</th>
-                    <% } %>
-                    <% if (s.timeH[0] || s.timeM[0] || s.timeS[0]) { %>
-                        <th>Time</th>
-                    <% } %>
-                </tr>
-            </thead>
-            <tbody>
-                <% for (let i = 0; i < s.setsNum; i++) { %>
+<div style="width: 90vw; margin: auto;">
+    <table>
+        <% todaysWorkouts.forEach(w => { %>
+            <% w.set.forEach(s => { %>
+                <thead>
                     <tr>
-                        <td><%= i + 1 %></td>
+                        <th></th>
+                        <th><a href="/workouts/<%= s.id %>/edit?curDate=<%= workoutId %>&setsNum=<%= s.setsNum %>"><%= s.exerciseName %></a></th>
+                    </tr>
+                    <tr>
+                        <th>Set #</th>
                         <% if (s.weight[0]) { %>
-                            <td><%= s.weight[i] %> <%= s.weightUnit[0] %></td>
+                            <th>Weight</th>
                         <% } %>
                         <% if (s.reps[0]) { %>
-                            <td><%= s.reps[i] %></td>
+                            <th>Reps</th>
                         <% } %>
                         <% if (s.distance[0]) { %>
-                            <td><%= s.distance[i] %> <%= s.distanceUnit[0] %></td>
+                            <th>Distance</th>
                         <% } %>
                         <% if (s.timeH[0] || s.timeM[0] || s.timeS[0]) { %>
-                            <td><%= s.timeH[i].padStart(2, '0') %>:<%= s.timeM[i].padStart(2, '0') %>:<%= s.timeS[i].padStart(2, '0') %></td>
+                            <th>Time</th>
                         <% } %>
                     </tr>
-                <% } %>
-            </tbody>
+                </thead>
+                <tbody>
+                    <% for (let i = 0; i < s.setsNum; i++) { %>
+                        <tr>
+                            <td><%= i + 1 %></td>
+                            <% if (s.weight[0]) { %>
+                                <td><%= s.weight[i] %> <%= s.weightUnit[0] %></td>
+                            <% } %>
+                            <% if (s.reps[0]) { %>
+                                <td><%= s.reps[i] %></td>
+                            <% } %>
+                            <% if (s.distance[0]) { %>
+                                <td><%= s.distance[i] %> <%= s.distanceUnit[0] %></td>
+                            <% } %>
+                            <% if (s.timeH[0] || s.timeM[0] || s.timeS[0]) { %>
+                                <td><%= s.timeH[i].padStart(2, '0') %>:<%= s.timeM[i].padStart(2, '0') %>:<%= s.timeS[i].padStart(2, '0') %></td>
+                            <% } %>
+                        </tr>
+                    <% } %>
+                </tbody>
+            <% }) %>
         <% }) %>
-    <% }) %>
-</table>
-
-<form action="/workouts/<%= workoutId %>/exercises/new" method="GET">
-    <input type="hidden" name="curCategory" value="<%= firstCategory %>">
-    <input type="hidden" name="curExercise" value="<%= firstExercise %>">
-    <input type="hidden" name="setsNum" value="1">
-    <button type="submit">Add Exercise</button>
-</form>
+    </table>
+    
+    <form action="/workouts/<%= workoutId %>/exercises/new" method="GET">
+        <input type="hidden" name="curCategory" value="<%= firstCategory %>">
+        <input type="hidden" name="curExercise" value="<%= firstExercise %>">
+        <input type="hidden" name="setsNum" value="1">
+        <button type="submit">Add Exercise</button>
+    </form>
+</div>
 
 <%- include('../partials/footer') %>

@@ -15,9 +15,13 @@ passport.use(new GoogleStrategy(
             let user = await User.findOne({ googleId: profile.id });
             if (user) return cb(null, user);
             let categories = [];
+            let exercises = [];
             categories.push(await Category.find({ name: 'Back' }));
             categories.push(await Category.find({ name: 'Chest' }));
             categories.push(await Category.find({ name: 'Legs' }));
+            exercises.push(await Exercise.findById('6576921bda2a4eb75844536c'));
+            exercises.push(await Exercise.findById('6576956a0358b62103b5d3ae'));
+            exercises.push(await Exercise.findById('6573665b8e5057e88bfbc906'));
             user = await User.create({
                 name: profile.displayName,
                 googleId: profile.id,
@@ -25,7 +29,12 @@ passport.use(new GoogleStrategy(
                 avatar: profile.photos[0].value
             });
             for (c of categories) {
+                console.log(c)
                 user.category.push(c[0]);
+                await user.save();
+            };
+            for (e of exercises) {
+                user.exercise.push(e);
                 await user.save();
             };
             return cb(null, user);

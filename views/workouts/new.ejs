@@ -1,67 +1,69 @@
 <%- include('../partials/header') %>
 
-<form action="/workouts/<%= curDate %>/exercises/new" method="GET">
-    <label>Category</label>
-    <input type="hidden" name="catChange" value="true">
-    <input type="hidden" name="setsNum" value="1">
-    <select name="curCategory" id="curCategory" onchange="this.form.submit()">
-        <% categories.forEach(c => { %>
-            <% if (c.name === curCategory.name) { %>
-                <option selected value="<%= c.name %>"><%= c.name %></option>
-            <% } else { %>
-                <option value="<%= c.name %>"><%= c.name %></option>
+<div style="width: 90vw; margin: auto;">
+    <form action="/workouts/<%= curDate %>/exercises/new" method="GET">
+        <label>Category</label>
+        <input type="hidden" name="catChange" value="true">
+        <input type="hidden" name="setsNum" value="1">
+        <select name="curCategory" id="curCategory" onchange="this.form.submit()">
+            <% categories.forEach(c => { %>
+                <% if (c.name === curCategory.name) { %>
+                    <option selected value="<%= c.name %>"><%= c.name %></option>
+                <% } else { %>
+                    <option value="<%= c.name %>"><%= c.name %></option>
+                <% } %>
+            <% }) %>
+        </select>
+    </form>
+    <form action="/workouts/<%= curDate %>/exercises/new" method="GET"">
+        <br><label>Exercise</label>
+        <select name="curExercise" id="curExercise" onchange="this.form.submit()">
+            <% exInCurCategory.forEach(e => { %>
+                <% if (e.name === curExercise.name) { %>
+                    <option selected value="<%= e.name %>"><%= e.name %></option>
+                <% } else { %>
+                    <option value="<%= e.name %>"><%= e.name %></option>
+                <% } %>
+            <% }) %>
+        </select>
+        <label>Number of Sets</label>
+        <select name="setsNum" id="setsNum" onchange="this.form.submit()">
+            <% for (let i = 1; i <= 10; i++) { %>
+                <% if (i === parseInt(setsNum)) { %>
+                    <option value="<%= i %>" selected><%= i %></option>
+                <% } else { %>
+                    <option value="<%= i %>"><%= i %></option>
+                <% } %>
             <% } %>
-        <% }) %>
-    </select>
-</form>
-<form action="/workouts/<%= curDate %>/exercises/new" method="GET"">
-    <br><label>Exercise</label>
-    <select name="curExercise" id="curExercise" onchange="this.form.submit()">
-        <% exInCurCategory.forEach(e => { %>
-            <% if (e.name === curExercise.name) { %>
-                <option selected value="<%= e.name %>"><%= e.name %></option>
-            <% } else { %>
-                <option value="<%= e.name %>"><%= e.name %></option>
+        </select>
+        <input type="hidden" name="curCategory" value="<%= curCategory.name %>">
+    </form>
+    
+    <form action="/workouts/<%= curDate %>/exercises" method="POST">
+        <h3><%= curExercise.name %></h3>
+        <% for (let i = 0; i < setsNum; i++) { %>
+            <% if (curExercise.exType.includes('Weight')) { %>
+                <input type="number" name="weight" placeholder="Weight" min="0" max="9999" step=".1" required><%= curExercise.weightUnit %>
+                <input type="hidden" name="weightUnit" value="<%= curExercise.weightUnit %>">
             <% } %>
-        <% }) %>
-    </select>
-    <label>Number of Sets</label>
-    <select name="setsNum" id="setsNum" onchange="this.form.submit()">
-        <% for (let i = 1; i <= 10; i++) { %>
-            <% if (i === parseInt(setsNum)) { %>
-                <option value="<%= i %>" selected><%= i %></option>
-            <% } else { %>
-                <option value="<%= i %>"><%= i %></option>
+            <% if (curExercise.exType.includes('Reps')) { %>
+                <input type="number" name="reps" placeholder="Reps" min="0" max="999" maxlength="3" required>
             <% } %>
+            <% if (curExercise.exType.includes('Time')) { %>
+                <input type="number" name="timeH" value="00" min="0" max="99" maxlength="2" required>hh
+                <input type="number" name="timeM" value="00" min="0" max="59" maxlength="2" required>mm
+                <input type="number" name="timeS" value="00" min="0" max="59" maxlength="2" required>ss
+            <% } %>
+            <% if (curExercise.exType.includes('Distance')) { %>
+                <input type="number" name="distance" placeholder="Distance" min="0" max="999" step=".01" required><%= curExercise.distanceUnit %>
+                <input type="hidden" name="distanceUnit" value="<%= curExercise.distanceUnit %>">
+            <% } %>
+            <br>
         <% } %>
-    </select>
-    <input type="hidden" name="curCategory" value="<%= curCategory.name %>">
-</form>
-
-<form action="/workouts/<%= curDate %>/exercises" method="POST">
-    <h3><%= curExercise.name %></h3>
-    <% for (let i = 0; i < setsNum; i++) { %>
-        <% if (curExercise.exType.includes('Weight')) { %>
-            <input type="number" name="weight" placeholder="Weight" min="0" max="9999" step=".1" required><%= curExercise.weightUnit %>
-            <input type="hidden" name="weightUnit" value="<%= curExercise.weightUnit %>">
-        <% } %>
-        <% if (curExercise.exType.includes('Reps')) { %>
-            <input type="number" name="reps" placeholder="Reps" min="0" max="999" maxlength="3" required>
-        <% } %>
-        <% if (curExercise.exType.includes('Time')) { %>
-            <input type="number" name="timeH" value="00" min="0" max="99" maxlength="2" required>hh
-            <input type="number" name="timeM" value="00" min="0" max="59" maxlength="2" required>mm
-            <input type="number" name="timeS" value="00" min="0" max="59" maxlength="2" required>ss
-        <% } %>
-        <% if (curExercise.exType.includes('Distance')) { %>
-            <input type="number" name="distance" placeholder="Distance" min="0" max="999" step=".01" required><%= curExercise.distanceUnit %>
-            <input type="hidden" name="distanceUnit" value="<%= curExercise.distanceUnit %>">
-        <% } %>
-        <br>
-    <% } %>
-    <input type="hidden" name="setsNum" value="<%= setsNum %>">
-    <input type="hidden" name="exerciseName" value="<%= curExercise.name %>">
-    <button type="submit">Add Exercise</button>
-</form>
+        <input type="hidden" name="setsNum" value="<%= setsNum %>">
+        <input type="hidden" name="exerciseName" value="<%= curExercise.name %>">
+        <button type="submit">Add Exercise</button>
+    </form>
+</div>
 
 <%- include('../partials/footer') %>

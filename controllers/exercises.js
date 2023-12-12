@@ -50,18 +50,19 @@ async function findUserExercises(req, res) {
 };
 
 async function index(req, res) {
-    const categories = (await findUserExercises(req, res)).categories;
+    const prelimCategories = (await findUserExercises(req, res)).categories;
     const exercises = (await findUserExercises(req, res)).exercises;
-    for (let i = 0; i < categories.length; i++) {
+    const categories = [];
+    for (let i = 0; i < prelimCategories.length; i++) {
         let categoryCheck = false;
         for (e of exercises) {
-            if (categories[i].exercise.includes(e._id)) {
+            if (prelimCategories[i].exercise.includes(e._id)) {
                 categoryCheck = true;
                 break;
             };
         };
-        if (!categoryCheck) {
-            categories.splice(i, 1);
+        if (categoryCheck) {
+            categories.push(prelimCategories[i]);
         };
     };
     res.render('exercises/index', { title: 'All Exercises' , categories, exercises });
