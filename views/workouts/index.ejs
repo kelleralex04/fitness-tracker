@@ -7,58 +7,60 @@
         <link rel='stylesheet' href='/stylesheets/style.css' />
         <title><%= title %></title>
     </head>
-    <body class="calendarBody">
-        <main>
-            <h1><%= title %></h1>
-            <nav>
-                <a href="/home">HOME</a> |
-                <a href="/workouts">WORKOUTS</a> |
-                <a href="/exercises">EXERCISES</a> |
-                <a href="/analysis">ANALYSIS</a> |
-                <a href="/logout">LOG OUT</a>
-            </nav>
-            <div class="wrapper">
-                <header>
-                    <p class="current-date"><%= curMonthText %> <%= curYear %></p>
-                    <div class="icons">
-                        <form action="/workouts/calendar" method="POST">
-                            <input type="hidden" name="curMonth" value="<% curMonth %>">
-                            <button name="prev" value="-"><</button>
-                            <button name="next" value="+">></button>
-                        </form>
-                    </div>
-                </header>
-                <div class="calendar">
-                    <ul class="weeks">
-                        <li>Sun</li>
-                        <li>Mon</li>
-                        <li>Tue</li>
-                        <li>Wed</li>
-                        <li>Thu</li>
-                        <li>Fri</li>
-                        <li>Sat</li>
-                    </ul>
-                    <ul class="days">
-                        <% for (let i = firstDayOfMonth; i > 0; i--) { %>
-                            <li class="inactive"><%= lastDateOfPrevMonth + 1 - i %></li>
-                        <% } %>
-                        <% for (let i = 1; i <= lastDateOfMonth; i++) { %>
-                            <% let isToday = '' %>
-                            <% if (i === today[0] && curMonth === today[1] && curYear === today[2]) { %>
-                                <% isToday = 'active' %>
-                            <% } %>
-                            <li class="<%= isToday %>"><a href="/workouts/m<%= curMonth + 1 %>d<%= i %>y<%= curYear %>"><%= i %>
-                            <% if (workoutDays.includes(i)) { %>
-                                *
-                            <% } %>
-                            </a></li>
-                        <% } %>
-                        <% for (let i = lastDayOfMonth; i < 6; i++) { %>
-                            <li class="inactive"><%= i - lastDayOfMonth + 1 %></li>
-                        <% } %>
-                    </ul>
-                </div>
-            </div>
-        </main>
+    <body>
+        <nav>
+            <ul id="navBar">
+                <li class="navBarLink"><a href="/home">HOME</a></li>
+                <li class="navBarLink"><a href="/workouts">WORKOUTS</a></li>
+                <li class="navBarLink"><a href="/exercises">EXERCISES</a></li>
+                <li class="navBarLink"><a href="/analysis">ANALYSIS</a></li>
+                <li class="navBarLink"><a href="/logout">LOG OUT</a></li>
+            </ul>
+        </nav>
+        <h1 style="position: absolute; text-align: center; background-color: #469EC4; margin-left: 46vw; margin-top: 10vh; width: 8vw; border: 0.5vmin solid; border-color: #1D3461;"><%= title %></h1>
     </body>
+    <main class="calendarBody">
+        <div class="wrapper">
+            <header>
+                <p class="current-date"><%= curMonthText %> <%= curYear %></p>
+                <div class="icons">
+                    <form action="/workouts/calendar" method="POST">
+                        <input type="hidden" name="curMonth" value="<% curMonth %>">
+                        <button name="prev" value="-"><</button>
+                        <button name="next" value="+">></button>
+                    </form>
+                </div>
+            </header>
+            <div class="calendar">
+                <ul class="weeks" style="margin-left: -30px;">
+                    <li>Sun</li>
+                    <li>Mon</li>
+                    <li>Tue</li>
+                    <li>Wed</li>
+                    <li>Thu</li>
+                    <li>Fri</li>
+                    <li>Sat</li>
+                </ul>
+                <ul class="days" style="margin-left: -30px;">
+                    <% for (let i = firstDayOfMonth; i > 0; i--) { %>
+                        <li class="inactive"><%= lastDateOfPrevMonth + 1 - i %></li>
+                    <% } %>
+                    <% for (let i = 1; i <= lastDateOfMonth; i++) { %>
+                        <% let isToday = '' %>
+                        <% if (i === today[0] && curMonth === today[1] && curYear === today[2]) { %>
+                            <% isToday = 'active' %>
+                        <% } %>
+                        <li class="<%= isToday %>"><a href="/workouts/m<%= curMonth + 1 %>d<%= i %>y<%= curYear %>"><%= i %>
+                        <% if (workoutDays.includes(i)) { %>
+                            *
+                        <% } %>
+                        </a></li>
+                    <% } %>
+                    <% for (let i = lastDayOfMonth; i < 6; i++) { %>
+                        <li class="inactive"><%= i - lastDayOfMonth + 1 %></li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+    </main>
 </html>

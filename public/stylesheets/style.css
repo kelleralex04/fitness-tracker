@@ -2,6 +2,7 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   margin: 0;
   position: relative;
+  background-color: #1F487E;
 }
 
 a {
@@ -14,7 +15,7 @@ a {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: #374709;
+  background: #4470aa;
 }
 
 .wrapper {
@@ -40,7 +41,6 @@ a {
 
 .calendar .days {
   margin-bottom: 20px;
-
 }
 .calendar .days li {
   cursor: pointer;
@@ -64,7 +64,7 @@ header .currentDate {
 }
 
 .active {
-  color: red;
+  color: #fb3640;
 }
 
 .login {
@@ -85,7 +85,7 @@ header .currentDate {
   padding-top: 20px;
   padding-bottom: 20px;
   padding-left: 0;
-  background-color: black;
+  background-color: #605F5E;
 }
 
 .navBarLink {
@@ -102,14 +102,15 @@ header .currentDate {
 }
 
 .navBarLink:hover {
-  background-color: red;
+  background-color: #fb3640;
 }
 
 .exercisesIndex {
   display: grid;
-  width: 80vw;
+  width: 17vw;
   margin: auto;
   grid-template-columns: 2vw 15vw;
   grid-template-rows: auto;
   align-items: center;
+  background-color: #469EC4;;
 };
