@@ -2,7 +2,7 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   margin: 0;
   position: relative;
-  background-color: #1F487E;
+  background-color: #bcd3f1;
 }
 
 a {
@@ -72,6 +72,7 @@ header .currentDate {
   justify-content: center;
   align-items: center;
   height: 34px;
+  color: white;
 }
 
 .login img {
@@ -112,5 +113,4 @@ header .currentDate {
   grid-template-columns: 2vw 15vw;
   grid-template-rows: auto;
   align-items: center;
-  background-color: #469EC4;;
 };
