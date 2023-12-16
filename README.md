@@ -22,7 +22,7 @@ Watch as your calendar starts to fill up with workouts day after day, month afte
 
 ---
 
-This app was created using JavaScript, HTML, CSS, Node.js, Express.js, and Chart.js.
+This app was created using JavaScript, HTML, CSS, Node.js, Express.js, MongoDB and Chart.js.
 
 Icebox features:
 - Improved styling
